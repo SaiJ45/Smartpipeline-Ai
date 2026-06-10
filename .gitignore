@@ -7,3 +7,5 @@ mlruns/
 reports/
 *.egg-info/
 venv/
+.venv/
+.history/
