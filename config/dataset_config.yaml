@@ -1,0 +1,49 @@
+active_dataset: olist
+
+datasets:
+  olist:
+    display_name: "Olist Brazilian E-Commerce"
+    source_type: csv
+    source_path: data/raw/
+    multi_file: true
+    files:
+      - name: orders
+        path: olist_orders_dataset.csv
+        primary_key: order_id
+      - name: order_items
+        path: olist_order_items_dataset.csv
+        primary_key: order_id
+      - name: products
+        path: olist_products_dataset.csv
+        primary_key: product_id
+      - name: customers
+        path: olist_customers_dataset.csv
+        primary_key: customer_id
+      - name: reviews
+        path: olist_order_reviews_dataset.csv
+        primary_key: review_id
+      - name: payments
+        path: olist_order_payments_dataset.csv
+        primary_key: order_id
+      - name: sellers
+        path: olist_sellers_dataset.csv
+        primary_key: seller_id
+      - name: geolocation
+        path: olist_geolocation_dataset.csv
+        primary_key: geolocation_zip_code_prefix
+      - name: category_translation
+        path: product_category_name_translation.csv
+        primary_key: product_category_name
+    date_column: order_purchase_timestamp
+    target_metric_column: price
+    text_columns_for_rag:
+      - review_comment_message
+      - product_category_name_english
+    category_columns:
+      - order_status
+      - payment_type
+      - customer_state
+    rag_chunk_template: "Order {order_id} placed on {order_purchase_timestamp} by customer from {customer_city}, {customer_state}. Status: {order_status}. Category: {product_category_name_english}. Value: R${price}. Review: {review_score}/5 stars. Comment: {review_comment_message}"
+    pinecone_sample_size: 100000
+    ml_forecast_enabled: true
+    ml_anomaly_enabled: true
