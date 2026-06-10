@@ -1,0 +1,65 @@
+{
+  "dataset_name": "geolocation",
+  "columns": [
+    {
+      "name": "geolocation_zip_code_prefix",
+      "detected_type": "NUMERIC",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 186,
+      "sample_values": [
+        "1037",
+        "1046",
+        "1046"
+      ]
+    },
+    {
+      "name": "geolocation_lat",
+      "detected_type": "NUMERIC",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 4257,
+      "sample_values": [
+        "-23.54562128115268",
+        "-23.54608112703553",
+        "-23.54612896641469"
+      ]
+    },
+    {
+      "name": "geolocation_lng",
+      "detected_type": "NUMERIC",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 4273,
+      "sample_values": [
+        "-46.63929204800168",
+        "-46.64482029837157",
+        "-46.64295148361138"
+      ]
+    },
+    {
+      "name": "geolocation_city",
+      "detected_type": "BOOLEAN",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 2,
+      "sample_values": [
+        "sao paulo",
+        "sao paulo",
+        "sao paulo"
+      ]
+    },
+    {
+      "name": "geolocation_state",
+      "detected_type": "BOOLEAN",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 1,
+      "sample_values": [
+        "SP",
+        "SP",
+        "SP"
+      ]
+    }
+  ]
+}

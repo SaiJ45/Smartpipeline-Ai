@@ -8,20 +8,23 @@ import logging
 
 from database.connection import SessionLocal, engine
 from database.models import Dataset, PipelineRun
+from core.schema_detector import SchemaDetector
+from core.validator_factory import ValidatorFactory
+from ingestion.transformer import DataTransformer
 
 # Setup logging
 logger = logging.getLogger(__name__)
 
 # Date columns that need datetime conversion
 DATE_COLUMNS = {
-    'olist_orders': [
+    'orders': [
         'order_purchase_timestamp',
         'order_approved_at',
         'order_delivered_carrier_date',
         'order_delivered_customer_date',
         'order_estimated_delivery_date'
     ],
-    'olist_reviews': ['review_creation_date']
+    'reviews': ['review_creation_date']
 }
 
 
@@ -39,6 +42,7 @@ class DataLoader:
         self.engine = engine
         self.records_processed = 0
         self.dataset_id = None
+        self.last_rejected_rows = []
     
     def load_all(self, config: Dict[str, Any]) -> None:
         """
@@ -88,6 +92,13 @@ class DataLoader:
         records_out = 0
         start_time = datetime.now()
         db_table_name = f'olist_{table_name}'
+        rejected_rows_all = []
+        schema = None
+        validator_model = None
+        transformer = DataTransformer()
+        schema_detector = SchemaDetector()
+        validator_factory = ValidatorFactory()
+        self.last_rejected_rows = []
         
         try:
             # Read CSV in chunks
@@ -101,34 +112,60 @@ class DataLoader:
                 cleaned_chunk = self._clean_chunk(chunk, table_name)
                 
                 # Special handling for olist_orders
-                if table_name == "olist_orders":
+                if table_name == "orders":
                     cleaned_chunk = self._calculate_delivery_delay(cleaned_chunk)
+
+                # Build validation schema/model from the first cleaned chunk only
+                if schema is None:
+                    schema = schema_detector.detect(cleaned_chunk, table_name)
+                    validator_model = validator_factory.build(schema)
+
+                valid_df, rejected_rows = transformer.transform(
+                    cleaned_chunk,
+                    table_name,
+                    schema,
+                    validator_model
+                )
+                rejected_rows_all.extend(rejected_rows)
                 
-                # Insert to database
-                try:
-                    cleaned_chunk.to_sql(
-                        db_table_name,
-                        con=self.engine,
-                        if_exists='append',
-                        index=False,
-                        method='multi'
-                    )
-                    records_out += len(cleaned_chunk)
-                except Exception as e:
-                    logger.error(f"Error inserting chunk into {table_name}: {e}")
-                    records_out += len(cleaned_chunk)  # Count even if insert failed
+                # Insert valid rows to database
+                if not valid_df.empty:
+                    try:
+                        for col in valid_df.select_dtypes(
+                            include=['datetime64[ns]']
+                            ).columns:
+                            valid_df[col] = valid_df[col].astype(object).where(
+                                valid_df[col].notna(), other=None)
+
+        
+                        valid_df.to_sql(
+                            db_table_name,
+                            con=self.engine,
+                            if_exists='append',
+                            index=False,
+                            chunksize=1000
+                            )
+                        records_out += len(valid_df)
+
+                    except Exception as e:
+                        logger.error(f"Error inserting chunk into {db_table_name}: {e}")
+                        print(f"  ⚠ Insert error for {db_table_name}: {str(e)[:100]}")
                 
-                # Print progress every 50000 rows
-                if records_out % 50000 == 0:
-                    print(f"✓ Loaded {records_out:,} rows into {table_name}...")
+                # Print progress every 10000 rows
+                if records_out > 0 and records_out % 10000 == 0:
+                     print(f"✓ Loaded {records_out:,} rows into {db_table_name}...")
+                     
+             
             
-            # Final count
-            print(f"✓ Loaded {records_out:,} rows into {table_name} (Total: {records_in:,})")
+            self.last_rejected_rows = rejected_rows_all
+
+            print(f"✓ Loaded {records_out:,} rows into {db_table_name} (Total: {records_in:,})")
             
             # Calculate stats
             duration_secs = (datetime.now() - start_time).total_seconds()
             throughput_rps = records_out / duration_secs if duration_secs > 0 else 0
-            rejection_rate = ((records_in - records_out) / records_in * 100) if records_in > 0 else 0
+            records_rejected = len(rejected_rows_all)
+            rejection_rate = (records_rejected / records_in * 100) if records_in > 0 else 0
             
             # Insert pipeline run record
             self._insert_pipeline_run(
@@ -136,7 +173,7 @@ class DataLoader:
                 file_path,
                 records_in,
                 records_out,
-                records_in - records_out,
+                records_rejected,
                 rejection_rate,
                 duration_secs,
                 throughput_rps,

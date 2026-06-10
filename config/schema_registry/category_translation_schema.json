@@ -1,0 +1,29 @@
+{
+  "dataset_name": "category_translation",
+  "columns": [
+    {
+      "name": "product_category_name",
+      "detected_type": "TEXT",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 71,
+      "sample_values": [
+        "beleza_saude",
+        "informatica_acessorios",
+        "automotivo"
+      ]
+    },
+    {
+      "name": "product_category_name_english",
+      "detected_type": "TEXT",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 71,
+      "sample_values": [
+        "health_beauty",
+        "computers_accessories",
+        "auto"
+      ]
+    }
+  ]
+}

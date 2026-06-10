@@ -1,0 +1,89 @@
+{
+  "dataset_name": "order_items",
+  "columns": [
+    {
+      "name": "order_id",
+      "detected_type": "ID",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 44,
+      "sample_values": [
+        "00010242fe8c5a6d1ba2dd792cb16214",
+        "00018f77f2f0320c557190d7a144bdd3",
+        "000229ec398224ef6ca0657da4fc703e"
+      ]
+    },
+    {
+      "name": "order_item_id",
+      "detected_type": "NUMERIC",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 3,
+      "sample_values": [
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "name": "product_id",
+      "detected_type": "ID",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 43,
+      "sample_values": [
+        "4244733e06e7ecb4970a6e2683c13e61",
+        "e5f2d52b802189ee658865ca93d83a8f",
+        "c777355d18b72b67abbeef9df44fd0fd"
+      ]
+    },
+    {
+      "name": "seller_id",
+      "detected_type": "ID",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 42,
+      "sample_values": [
+        "48436dade18ac8b2bce089ec2a041202",
+        "dd7ddc04e1b6c2c614352b383efe2d36",
+        "5b51032eddd242adc84c38acab88f23d"
+      ]
+    },
+    {
+      "name": "shipping_limit_date",
+      "detected_type": "DATE",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 44,
+      "sample_values": [
+        "2017-09-19 09:45:35",
+        "2017-05-03 11:05:13",
+        "2018-01-18 14:48:30"
+      ]
+    },
+    {
+      "name": "price",
+      "detected_type": "NUMERIC",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 41,
+      "sample_values": [
+        "58.9",
+        "239.9",
+        "199.0"
+      ]
+    },
+    {
+      "name": "freight_value",
+      "detected_type": "NUMERIC",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 38,
+      "sample_values": [
+        "13.29",
+        "19.93",
+        "17.87"
+      ]
+    }
+  ]
+}

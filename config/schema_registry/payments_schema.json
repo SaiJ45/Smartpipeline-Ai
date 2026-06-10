@@ -1,0 +1,65 @@
+{
+  "dataset_name": "payments",
+  "columns": [
+    {
+      "name": "order_id",
+      "detected_type": "ID",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 9921,
+      "sample_values": [
+        "b81ef226f3fe1789b1e8b2acac839d17",
+        "a9810da82917af2d9aefd1278f1dcfa0",
+        "25e8ea4e93396b6fa0d3dd708e76c1bd"
+      ]
+    },
+    {
+      "name": "payment_sequential",
+      "detected_type": "NUMERIC",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 18,
+      "sample_values": [
+        "1",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "name": "payment_type",
+      "detected_type": "CATEGORY",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 4,
+      "sample_values": [
+        "credit_card",
+        "credit_card",
+        "credit_card"
+      ]
+    },
+    {
+      "name": "payment_installments",
+      "detected_type": "NUMERIC",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 18,
+      "sample_values": [
+        "8",
+        "1",
+        "1"
+      ]
+    },
+    {
+      "name": "payment_value",
+      "detected_type": "NUMERIC",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 7052,
+      "sample_values": [
+        "99.33",
+        "24.39",
+        "65.71"
+      ]
+    }
+  ]
+}

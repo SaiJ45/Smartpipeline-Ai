@@ -1,0 +1,53 @@
+{
+  "dataset_name": "sellers",
+  "columns": [
+    {
+      "name": "seller_id",
+      "detected_type": "ID",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 3095,
+      "sample_values": [
+        "3442f8959a84dea7ee197c632cb2df15",
+        "d1b65fc7debc3361ea86b5f14c68d2e2",
+        "ce3ad9de960102d0677a81f5d0bb7b2d"
+      ]
+    },
+    {
+      "name": "seller_zip_code_prefix",
+      "detected_type": "NUMERIC",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 2246,
+      "sample_values": [
+        "13023",
+        "13844",
+        "20031"
+      ]
+    },
+    {
+      "name": "seller_city",
+      "detected_type": "TEXT",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 611,
+      "sample_values": [
+        "campinas",
+        "mogi guacu",
+        "rio de janeiro"
+      ]
+    },
+    {
+      "name": "seller_state",
+      "detected_type": "CATEGORY",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 23,
+      "sample_values": [
+        "SP",
+        "SP",
+        "RJ"
+      ]
+    }
+  ]
+}

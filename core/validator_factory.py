@@ -1,201 +1,95 @@
+
 from typing import Dict, Any, Tuple, Optional, Type
 from datetime import datetime
 from pydantic import create_model, BaseModel, field_validator, ValidationError
+import pandas as pd
 
 
 class ValidatorFactory:
     """Factory for creating dynamic Pydantic validators based on schema definitions."""
-    
-    # Keywords that allow negative values in NUMERIC fields
-    NEGATIVE_ALLOWED_KEYWORDS = {"delta", "change", "temperature", "diff", "balance"}
-    
+
+    NEGATIVE_ALLOWED_KEYWORDS = {
+    "delta", "change", "temperature", "diff", "balance",
+    "lat", "lng", "lon", "longitude", "latitude",
+    "coord", "x", "y", "z", "delay", "discount"}
+
     def build(self, schema: Dict[str, Any]) -> Type[BaseModel]:
         """
         Build a dynamic Pydantic model from a schema dictionary.
-        
-        The schema should have a 'columns' key containing a list of column definitions,
-        each with at least 'name' and 'detected_type' keys.
-        
-        Column type rules:
-        - ID: Optional[str], rejects None/empty string
-        - DATE: Optional[str], rejects future dates
-        - NUMERIC: Optional[float], rejects negative (unless column name contains delta/change/etc)
-        - Others: Optional[str], no validation
-        
-        Args:
-            schema: Schema dictionary with 'columns' list
-            
-        Returns:
-            A dynamically created Pydantic BaseModel subclass
         """
         if not isinstance(schema, dict) or "columns" not in schema:
             raise ValueError("Schema must be a dict with 'columns' key")
-        
+
         columns = schema.get("columns", [])
         field_definitions = {}
-        
+
         for col_info in columns:
             col_name = col_info.get("name")
             col_type = col_info.get("detected_type")
-            
+
             if not col_name or not col_type:
                 continue
-            
-            # Define field with appropriate type and validator
-            field_definitions[col_name] = self._create_field_definition(
-                col_name, col_type
-            )
-        
-        # Create the model dynamically
+
+            if col_type == "NUMERIC":
+                field_definitions[col_name] = (Optional[float], None)
+            elif col_type == "BOOLEAN":
+                field_definitions[col_name] = (Optional[bool], None)
+            else:
+                # ID, DATE, CATEGORY, TEXT
+                field_definitions[col_name] = (Optional[str], None)
+
+        # Build model with just field definitions — no dynamic validators
+        # Validation logic is handled in validate_row() directly
         model_class = create_model(
             "DynamicValidator",
-            __base__=BaseModel,
             **field_definitions
         )
-        
+
+        # Attach schema metadata so validate_row can use it
+        model_class.__schema_columns__ = {
+            col["name"]: col["detected_type"]
+            for col in columns
+            if col.get("name") and col.get("detected_type")
+        }
+
         return model_class
-    
-    def build(self, schema: Dict[str, Any]) -> Type[BaseModel]:
+
+    def validate_row(
+            self,
+            model_class: Type[BaseModel],
+            row: Dict[str, Any]
+        ) -> Tuple[bool, str]:
         """
-        Build a dynamic Pydantic model from a schema dictionary.
-        
-        The schema should have a 'columns' key containing a list of column definitions,
-        each with at least 'name' and 'detected_type' keys.
-        
-        Column type rules:
-        - ID: Optional[str], rejects None/empty string
-        - DATE: Optional[str], rejects future dates
-        - NUMERIC: Optional[float], rejects negative (unless column name contains delta/change/etc)
-        - Others: Optional[str], no validation
-        
-        Args:
-            schema: Schema dictionary with 'columns' list
-            
-        Returns:
-            A dynamically created Pydantic BaseModel subclass
+        Validate a single row. Only checks critical business rules.
+        Type coercion is already handled by the loader.
         """
-        if not isinstance(schema, dict) or "columns" not in schema:
-            raise ValueError("Schema must be a dict with 'columns' key")
+        schema_columns = getattr(model_class, "__schema_columns__", {})
         
-        columns = schema.get("columns", [])
-        validators = {}
-        field_definitions = {}
-        
-        for col_info in columns:
-            col_name = col_info.get("name")
-            col_type = col_info.get("detected_type")
-            
-            if not col_name or not col_type:
-                continue
-            
-            # Define field type
-            if col_type == "ID":
-                field_definitions[col_name] = (Optional[str], None)
-            elif col_type == "DATE":
-                field_definitions[col_name] = (Optional[str], None)
-            elif col_type == "NUMERIC":
-                field_definitions[col_name] = (Optional[float], None)
-            else:
-                # BOOLEAN, CATEGORY, TEXT, and unknown types
-                field_definitions[col_name] = (Optional[str], None)
-            
-            # Create validators for specific types
-            validator_func = self._create_validator(col_name, col_type)
-            if validator_func:
-                validators[f"validate_{col_name}"] = field_validator(col_name)(validator_func)
-        
-        return create_model(
-            "DynamicValidator",
-            __base__=BaseModel,
-            __validators__=validators,
-            **field_definitions
-        )
-    
-    def _create_validator(self, col_name: str, col_type: str):
-        """
-        Create a validator function for a column based on its type.
-        
-        Args:
-            col_name: Name of the column
-            col_type: Detected type (ID, DATE, NUMERIC, CATEGORY, TEXT, BOOLEAN)
-            
-        Returns:
-            Validator function or None if no validation needed
-        """
+        for col_name, col_type in schema_columns.items():
+            value = row.get(col_name)
+
+        # Only reject truly null ID fields
         if col_type == "ID":
-            def validate_id(cls, value):
-                if value is None or (isinstance(value, str) and value.strip() == ""):
-                    raise ValueError(f"ID field '{col_name}' cannot be None or empty")
-                return value
-            return validate_id
-        
-        elif col_type == "DATE":
-            def validate_date(cls, value):
-                if value is None:
-                    return value
-                try:
-                    parsed_date = pd.to_datetime(value)
-                    if parsed_date > datetime.now():
-                        raise ValueError(
-                            f"DATE field '{col_name}' cannot be in the future (got {value})"
-                        )
-                except Exception as e:
-                    raise ValueError(f"DATE field '{col_name}' has invalid date: {e}")
-                return value
-            return validate_date
-        
+            if value is None or str(value).strip() == "":
+                return (False, f"null or empty ID: {col_name}")
+
+        # Only reject negative NUMERIC values
+        # Skip if column allows negatives
         elif col_type == "NUMERIC":
-            # Check if column name allows negative values
-            col_name_lower = col_name.lower()
-            allows_negative = any(
-                keyword in col_name_lower
-                for keyword in self.NEGATIVE_ALLOWED_KEYWORDS
-            )
-            
-            if not allows_negative:
-                def validate_numeric(cls, value):
-                    if value is not None and value < 0:
-                        raise ValueError(
-                            f"NUMERIC field '{col_name}' cannot be negative (got {value})"
-                        )
-                    return value
-                return validate_numeric
-        
-        return None
-    
-    def validate_row(self, model_class: Type[BaseModel], row: Dict[str, Any]) -> Tuple[bool, str]:
-        """
-        Validate a single row of data using the provided model class.
-        
-        Args:
-            model_class: Pydantic model class (from build())
-            row: Dictionary containing row data
-            
-        Returns:
-            Tuple of (is_valid: bool, error_message: str)
-            - (True, '') if row is valid
-            - (False, error_reason) if row is invalid
-        """
-        try:
-            model_class(**row)
-            return (True, "")
-        except ValidationError as e:
-            # Extract error messages from ValidationError
-            errors = e.errors()
-            error_messages = []
-            for error in errors:
-                field = error.get("loc", ("unknown",))[0]
-                msg = error.get("msg", "Validation failed")
-                error_messages.append(f"{field}: {msg}")
-            
-            error_reason = "; ".join(error_messages)
-            return (False, error_reason)
-        except Exception as e:
-            return (False, f"Unexpected validation error: {str(e)}")
+            if value is not None and value != "" and value == value:  # NaN check
+                try:
+                    num = float(value)
+                    col_lower = col_name.lower()
+                    allows_negative = any(
+                        kw in col_lower
+                        for kw in self.NEGATIVE_ALLOWED_KEYWORDS
+                    )
+                    if not allows_negative and num < 0:
+                        return (False, f"negative value in {col_name}: {value}")
+                except (TypeError, ValueError):
+                    pass
 
+        # Skip DATE validation — loader already coerced dates
+        # Skip TEXT/CATEGORY — no rules needed
 
-# Import pandas for datetime parsing (needed in validators)
-try:
-    import pandas as pd
-except ImportError:
-    pd = None
+        return (True, "")

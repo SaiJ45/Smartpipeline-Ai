@@ -1,0 +1,113 @@
+{
+  "dataset_name": "products",
+  "columns": [
+    {
+      "name": "product_id",
+      "detected_type": "ID",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 10000,
+      "sample_values": [
+        "1e9e8ef04dbcff4541ed26657ea517e5",
+        "3aa071139cb16b67ca9e5dea641aaa2f",
+        "96bd76ec8810374ed1b65e291975717f"
+      ]
+    },
+    {
+      "name": "product_category_name",
+      "detected_type": "TEXT",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 73,
+      "sample_values": [
+        "perfumaria",
+        "artes",
+        "esporte_lazer"
+      ]
+    },
+    {
+      "name": "product_name_lenght",
+      "detected_type": "NUMERIC",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 60,
+      "sample_values": [
+        "40.0",
+        "44.0",
+        "46.0"
+      ]
+    },
+    {
+      "name": "product_description_lenght",
+      "detected_type": "NUMERIC",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 2141,
+      "sample_values": [
+        "287.0",
+        "276.0",
+        "250.0"
+      ]
+    },
+    {
+      "name": "product_photos_qty",
+      "detected_type": "NUMERIC",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 18,
+      "sample_values": [
+        "1.0",
+        "1.0",
+        "1.0"
+      ]
+    },
+    {
+      "name": "product_weight_g",
+      "detected_type": "NUMERIC",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 1203,
+      "sample_values": [
+        "225.0",
+        "1000.0",
+        "154.0"
+      ]
+    },
+    {
+      "name": "product_length_cm",
+      "detected_type": "NUMERIC",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 97,
+      "sample_values": [
+        "16.0",
+        "30.0",
+        "18.0"
+      ]
+    },
+    {
+      "name": "product_height_cm",
+      "detected_type": "NUMERIC",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 96,
+      "sample_values": [
+        "10.0",
+        "18.0",
+        "9.0"
+      ]
+    },
+    {
+      "name": "product_width_cm",
+      "detected_type": "NUMERIC",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 84,
+      "sample_values": [
+        "14.0",
+        "20.0",
+        "15.0"
+      ]
+    }
+  ]
+}

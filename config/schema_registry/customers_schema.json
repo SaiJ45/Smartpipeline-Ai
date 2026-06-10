@@ -1,0 +1,65 @@
+{
+  "dataset_name": "customers",
+  "columns": [
+    {
+      "name": "customer_id",
+      "detected_type": "ID",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 10000,
+      "sample_values": [
+        "06b8999e2fba1a1fbc88172c00ba8bc7",
+        "18955e83d337fd6b2def6b18a428ac77",
+        "4e7b3e00288586ebd08712fdd0374a03"
+      ]
+    },
+    {
+      "name": "customer_unique_id",
+      "detected_type": "ID",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 9964,
+      "sample_values": [
+        "861eff4711a542e4b93843c6dd7febb0",
+        "290c77bc529b7ac935b93aa66c333dc3",
+        "060e732b5b29e8181a18229c7b0b2b5e"
+      ]
+    },
+    {
+      "name": "customer_zip_code_prefix",
+      "detected_type": "NUMERIC",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 5878,
+      "sample_values": [
+        "14409",
+        "9790",
+        "1151"
+      ]
+    },
+    {
+      "name": "customer_city",
+      "detected_type": "TEXT",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 1594,
+      "sample_values": [
+        "franca",
+        "sao bernardo do campo",
+        "sao paulo"
+      ]
+    },
+    {
+      "name": "customer_state",
+      "detected_type": "CATEGORY",
+      "null_count": 0,
+      "null_pct": 0.0,
+      "unique_count": 27,
+      "sample_values": [
+        "SP",
+        "SP",
+        "SP"
+      ]
+    }
+  ]
+}
