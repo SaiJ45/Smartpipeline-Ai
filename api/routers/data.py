@@ -3,6 +3,7 @@ from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from database.connection import get_db
+from ml.anomaly import AnomalyDetector
 
 
 router = APIRouter()
@@ -93,7 +94,19 @@ def data_by_state(db: Session = Depends(get_db)):
 
 @router.get("/anomalies")
 def data_anomalies():
-    return {
-        "message": "ML anomalies will appear here after Day 4",
-        "anomalies": [],
-    }
+    try:
+        detector = AnomalyDetector()
+        anomalies = detector.detect()
+
+        return {
+            "status": "success",
+            "anomaly_count": len(anomalies),
+            "anomalies": anomalies,
+        }
+    except Exception as e:
+        return {
+            "status": "error",
+            "message": str(e),
+            "anomaly_count": 0,
+            "anomalies": [],
+        }
