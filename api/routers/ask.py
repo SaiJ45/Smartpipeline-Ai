@@ -14,10 +14,26 @@ class AskRequest(BaseModel):
 
 @router.post("")
 def ask(request: AskRequest):
-    return {
-        "status": "pending",
-        "question": request.question,
-        "answer": "RAG system will be available after Day 5",
-        "dataset": request.dataset,
-        "timestamp": datetime.now().isoformat(),
-    }
+    try:
+        from rag.chain import RAGChain
+
+        chain = RAGChain()
+        result = chain.answer(question=request.question, dataset=request.dataset)
+
+        return {
+            "status": "success",
+            "question": request.question,
+            "answer": result["answer"],
+            "sources": result["sources"],
+            "query_time_ms": result["query_time_ms"],
+            "dataset": request.dataset,
+            "timestamp": datetime.now().isoformat(),
+        }
+    except Exception as e:
+        return {
+            "status": "error",
+            "question": request.question,
+            "error": str(e),
+            "dataset": request.dataset,
+            "timestamp": datetime.now().isoformat(),
+        }

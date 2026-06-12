@@ -114,8 +114,6 @@ packaging==26.2
 pandas==2.3.3
 passlib==1.7.4
 pillow==12.2.0
-pinecone-client==6.0.0
-pinecone-plugin-interface==0.0.7
 platformdirs==4.10.0
 plotly==6.8.0
 pluggy==1.6.0
@@ -198,3 +196,6 @@ zstandard==0.25.0
 schedule
 python-jose
 passlib
+sentence-transformers
+langchain-groq
+pinecone

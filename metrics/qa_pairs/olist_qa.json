@@ -1,0 +1,122 @@
+[
+  {
+    "question": "Which Brazilian state had the most orders?",
+    "ground_truth": "SP (São Paulo) had the most orders"
+  },
+  {
+    "question": "What was the most common payment method?",
+    "ground_truth": "Credit card was the most common payment method"
+  },
+  {
+    "question": "Which product category had the most orders?",
+    "ground_truth": "bed_bath_table or housewares category had the most orders"
+  },
+  {
+    "question": "What was the average review score?",
+    "ground_truth": "The average review score was approximately 4.0 out of 5"
+  },
+  {
+    "question": "Which state had the most delayed deliveries?",
+    "ground_truth": "SP (São Paulo) had the most delayed deliveries in absolute count, followed by RJ (Rio de Janeiro)"
+  },
+  {
+    "question": "What was the average order value?",
+    "ground_truth": "The average order value was approximately R$120-160"
+  },
+  {
+    "question": "How many orders were delivered successfully?",
+    "ground_truth": "Approximately 96-97% of orders (around 96,478 out of 99,441 total) were delivered successfully"
+  },
+  {
+    "question": "Which city had the most customers?",
+    "ground_truth": "São Paulo had the most customers"
+  },
+  {
+    "question": "What percentage of orders were paid in installments?",
+    "ground_truth": "Approximately 66.9% of credit card orders used more than one installment, with an average of 3.5 installments per credit card transaction"
+  },
+  {
+    "question": "Which product category had the lowest review scores?",
+    "ground_truth": "Security and services or office furniture categories had lower scores"
+  },
+  {
+    "question": "What was the average delivery time in days?",
+    "ground_truth": "The average delivery time was approximately 12.1 days from order purchase to customer delivery, with a median of 10 days"
+  },
+  {
+    "question": "What percentage of orders were delivered late (after the estimated delivery date)?",
+    "ground_truth": "Approximately 6.8% of delivered orders arrived after the estimated delivery date"
+  },
+  {
+    "question": "What was the average freight cost per order?",
+    "ground_truth": "The average freight cost was approximately R$19.99 per order item"
+  },
+  {
+    "question": "Which states had the highest average freight costs?",
+    "ground_truth": "Northern and northeastern states had the highest freight costs — RR (Roraima) averaged R$42.98, PB (Paraíba) R$42.72, RO (Rondônia) R$41.07, AC (Acre) R$40.07, and PI (Piauí) R$39.15"
+  },
+  {
+    "question": "What percentage of freight cost makes up the total payment on average?",
+    "ground_truth": "Freight costs represented approximately 21.3% of the total order payment value on average"
+  },
+  {
+    "question": "How many unique sellers were active on the platform?",
+    "ground_truth": "There were 3,095 unique sellers active on the Olist platform"
+  },
+  {
+    "question": "Which state had the most sellers?",
+    "ground_truth": "SP (São Paulo) had the most sellers with 1,849, followed by PR (Paraná) with 349 and MG (Minas Gerais) with 244"
+  },
+  {
+    "question": "What was the average revenue per seller?",
+    "ground_truth": "The average revenue per seller was approximately R$4,391.48, while the top seller earned approximately R$229,472.63"
+  },
+  {
+    "question": "What percentage of sellers shipped orders late (past the shipping limit date)?",
+    "ground_truth": "Approximately 9.4% of order items were shipped by sellers after the shipping limit date"
+  },
+  {
+    "question": "What was the average number of orders per seller?",
+    "ground_truth": "Each seller fulfilled an average of approximately 36.4 orders, with the top seller fulfilling 2,033 orders"
+  },
+  {
+    "question": "Which month had the highest revenue?",
+    "ground_truth": "November 2017 (Black Friday month) had the highest revenue at approximately R$1,010,271"
+  },
+  {
+    "question": "What was the total freight cost paid across all orders?",
+    "ground_truth": "The total freight cost across all orders was approximately R$2,251,909"
+  },
+  {
+    "question": "How many orders were cancelled?",
+    "ground_truth": "625 orders were cancelled, representing less than 1% of all 99,441 orders"
+  },
+  {
+    "question": "What was the average product weight?",
+    "ground_truth": "The average product weight was approximately 2,276.5 grams (about 2.3 kg), with the heaviest single product weighing 40,425 grams"
+  },
+  {
+    "question": "Which product category had the heaviest average weight?",
+    "ground_truth": "Office furniture (moveis_escritorio) had the heaviest average weight at approximately 11,390 grams, followed by bedroom furniture (moveis_quarto) at 9,989 grams"
+  },
+  {
+    "question": "How many unique products were listed on the platform?",
+    "ground_truth": "There were 32,951 unique products listed across all categories on the Olist platform"
+  },
+  {
+    "question": "What was the average product price?",
+    "ground_truth": "The average product price was approximately R$120.65"
+  },
+  {
+    "question": "Which months in 2018 showed the highest order volume?",
+    "ground_truth": "April and May 2018 showed the highest revenue months in 2018 at approximately R$996,647 and R$996,517 respectively"
+  },
+  {
+    "question": "What proportion of total orders were in a non-delivered status?",
+    "ground_truth": "Approximately 3.5% of orders were in non-delivered statuses: 1,107 shipped, 625 cancelled, 609 unavailable, and 314 invoiced out of 99,441 total orders"
+  },
+  {
+    "question": "Which seller state had the worst on-time shipping performance?",
+    "ground_truth": "States with fewer sellers and longer distances from logistics hubs, such as northern and northeastern states, generally had worse on-time shipping performance"
+  }
+]
